@@ -58,7 +58,7 @@ export function calculateDurationInMinutes(startTime, endTime) {
  */
 export function addMinutes(time, minutes) {
   const totalMinutes = timeToMinutes(time) + minutes
-  const hours = Math.floor(totalMinutes / 60)
+  const hours = Math.floor(totalMinutes / 60) % 24
   const mins = totalMinutes % 60
   return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`
 }
@@ -81,25 +81,23 @@ export function formatTime(seconds) {
 /**
  * Generiert ein Array von Zeitslots mit gegebenem Intervall
  * @param {number} intervalMinutes - Intervall in Minuten (z.B. 30, 60)
- * @param {number} startHour - Startzeit in Stunden (Standard: 7)
- * @param {number} endHour - Endzeit in Stunden (Standard: 18)
+ * @param {string} startTime - Startzeit im Format "HH:MM" (Standard: "09:00")
+ * @param {string} endTime - Endzeit im Format "HH:MM" (Standard: "23:00")
  * @returns {string[]} - Array von Zeit-Strings im Format "HH:MM"
  *
  * @example
- * generateTimeSlots(30) // returns ["07:00", "07:30", "08:00", ...]
- * generateTimeSlots(60, 9, 17) // returns ["09:00", "10:00", ..., "17:00"]
+ * generateTimeSlots(30) // returns ["09:00", "09:30", "10:00", ..., "23:00"]
+ * generateTimeSlots(60, "08:00", "20:00") // returns ["08:00", "09:00", ..., "20:00"]
  */
-export function generateTimeSlots(intervalMinutes = 30, startHour = 7, endHour = 18) {
+export function generateTimeSlots(intervalMinutes = 30, startTime = '09:00', endTime = '23:00') {
   const slots = []
-  const totalMinutes = (endHour - startHour) * 60
-
-  for (let minutes = 0; minutes <= totalMinutes; minutes += intervalMinutes) {
-    const hour = startHour + Math.floor(minutes / 60)
-    const minute = minutes % 60
-    if (hour <= endHour) {
-      slots.push(`${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`)
-    }
+  const startMinutes = timeToMinutes(startTime)
+  const endMinutes = timeToMinutes(endTime)
+  
+  for (let minutes = startMinutes; minutes <= endMinutes; minutes += intervalMinutes) {
+    slots.push(minutesToTime(minutes))
   }
+  
   return slots
 }
 
