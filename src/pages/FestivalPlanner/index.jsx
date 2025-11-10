@@ -14,9 +14,9 @@ function FestivalPlanner() {
   // LocalStorage-synchronisierte State mit Custom Hook
   const [sessions, setSessions] = useLocalStorage('festival-sessions-2026', [])
   const [locations, setLocations] = useLocalStorage('festival-locations-2026', [
-    { id: 'loc-1', name: 'Hauptbühne', color: '#6366f1' },
-    { id: 'loc-2', name: 'Workshop-Raum 1', color: '#10b981' },
-    { id: 'loc-3', name: 'Experience Area', color: '#f59e0b' },
+    { id: 'loc-1', name: 'Theater Stage', color: '#6366f1' },
+    { id: 'loc-2', name: 'Dome Stage', color: '#10b981' },
+    { id: 'loc-3', name: 'Orange Room', color: '#f59e0b' },
   ])
   const [activeDay, setActiveDay] = useState(1)
   const [viewMode, setViewMode] = useState('grid') // 'grid' or 'list'
@@ -36,11 +36,12 @@ function FestivalPlanner() {
     })
   )
 
+  // Korrigierte Event Days für 2026
   const days = [
-    { number: 1, name: 'Tag 1', date: 'Do. 11.06.2026' },
-    { number: 2, name: 'Tag 2', date: 'Fr. 12.06.2026' },
-    { number: 3, name: 'Tag 3', date: 'Sa. 13.06.2026' },
-    { number: 4, name: 'Tag 4', date: 'So. 14.06.2026' }
+    { number: 1, name: 'Donnerstag', date: 'Do. 2. Juli' },
+    { number: 2, name: 'Freitag', date: 'Fr. 3. Juli' },
+    { number: 3, name: 'Samstag', date: 'Sa. 4. Juli' },
+    { number: 4, name: 'Sonntag', date: 'So. 5. Juli' }
   ]
 
   const timeSlots = generateTimeSlots(zoomLevel)
@@ -135,6 +136,8 @@ function FestivalPlanner() {
       }
       reader.readAsText(file)
     }
+    // Reset file input
+    e.target.value = ''
   }
 
   // JSON Import/Export Handlers
@@ -158,6 +161,8 @@ function FestivalPlanner() {
       }
       reader.readAsText(file)
     }
+    // Reset file input
+    e.target.value = ''
   }
 
   const handleExportJSON = () => {
@@ -176,6 +181,9 @@ function FestivalPlanner() {
       <div className="festival-header">
         <div>
           <h1 className="page-title">Festival der Zukunft 2026 📅</h1>
+          <p style={{ color: '#666', fontSize: '0.9rem', marginTop: '0.5rem' }}>
+            Do. 2. Juli - So. 5. Juli 2026
+          </p>
         </div>
         <div className="festival-actions">
           <button onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')} className="btn-secondary">
