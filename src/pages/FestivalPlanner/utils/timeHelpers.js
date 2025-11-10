@@ -2,7 +2,6 @@
  * Zeit-Hilfsfunktionen für Zeit-Berechnungen
  * Wiederverwendbar in FestivalPlanner, MeditationTimer, etc.
  */
-
 /**
  * Konvertiert Zeit-String (HH:MM) zu Minuten seit Mitternacht
  * @param {string} time - Zeit im Format "HH:MM" (z.B. "10:30")
@@ -16,7 +15,6 @@ export function timeToMinutes(time) {
   const [hours, minutes] = time.split(':').map(Number)
   return hours * 60 + minutes
 }
-
 /**
  * Konvertiert Minuten seit Mitternacht zu Zeit-String
  * @param {number} minutes - Minuten seit Mitternacht
@@ -29,9 +27,8 @@ export function timeToMinutes(time) {
 export function minutesToTime(minutes) {
   const hours = Math.floor(minutes / 60)
   const mins = minutes % 60
-  return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`
+  return ${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}
 }
-
 /**
  * Berechnet die Dauer in Minuten zwischen zwei Zeitpunkten
  * @param {string} startTime - Startzeit im Format "HH:MM"
@@ -45,7 +42,6 @@ export function calculateDurationInMinutes(startTime, endTime) {
   if (!startTime || !endTime) return 60 // Fallback: 60 Minuten
   return timeToMinutes(endTime) - timeToMinutes(startTime)
 }
-
 /**
  * Addiert Minuten zu einer Zeitangabe
  * @param {string} time - Zeit im Format "HH:MM"
@@ -58,11 +54,10 @@ export function calculateDurationInMinutes(startTime, endTime) {
  */
 export function addMinutes(time, minutes) {
   const totalMinutes = timeToMinutes(time) + minutes
-  const hours = Math.floor(totalMinutes / 60) % 24
+  const hours = Math.floor(totalMinutes / 60)
   const mins = totalMinutes % 60
-  return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`
+  return ${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}
 }
-
 /**
  * Formatiert Sekunden als MM:SS String für Timer-Displays
  * @param {number} seconds - Anzahl Sekunden
@@ -75,32 +70,31 @@ export function addMinutes(time, minutes) {
 export function formatTime(seconds) {
   const mins = Math.floor(seconds / 60)
   const secs = seconds % 60
-  return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
+  return ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}
 }
-
 /**
  * Generiert ein Array von Zeitslots mit gegebenem Intervall
  * @param {number} intervalMinutes - Intervall in Minuten (z.B. 30, 60)
- * @param {string} startTime - Startzeit im Format "HH:MM" (Standard: "09:00")
- * @param {string} endTime - Endzeit im Format "HH:MM" (Standard: "23:00")
+ * @param {number} startHour - Startzeit in Stunden (Standard: 7)
+ * @param {number} endHour - Endzeit in Stunden (Standard: 18)
  * @returns {string[]} - Array von Zeit-Strings im Format "HH:MM"
  *
  * @example
- * generateTimeSlots(30) // returns ["09:00", "09:30", "10:00", ..., "23:00"]
- * generateTimeSlots(60, "08:00", "20:00") // returns ["08:00", "09:00", ..., "20:00"]
+ * generateTimeSlots(30) // returns ["07:00", "07:30", "08:00", ...]
+ * generateTimeSlots(60, 9, 17) // returns ["09:00", "10:00", ..., "17:00"]
  */
-export function generateTimeSlots(intervalMinutes = 30, startTime = '09:00', endTime = '23:00') {
+export function generateTimeSlots(intervalMinutes = 30, startHour = 7, endHour = 18) {
   const slots = []
-  const startMinutes = timeToMinutes(startTime)
-  const endMinutes = timeToMinutes(endTime)
-  
-  for (let minutes = startMinutes; minutes <= endMinutes; minutes += intervalMinutes) {
-    slots.push(minutesToTime(minutes))
+  const totalMinutes = (endHour - startHour) * 60
+  for (let minutes = 0; minutes <= totalMinutes; minutes += intervalMinutes) {
+    const hour = startHour + Math.floor(minutes / 60)
+    const minute = minutes % 60
+    if (hour <= endHour) {
+      slots.push${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')})
+    }
   }
-  
   return slots
 }
-
 /**
  * Berechnet Endzeit aus Startzeit und Dauer
  * @param {string} startTime - Startzeit im Format "HH:MM"
