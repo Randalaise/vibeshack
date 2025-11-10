@@ -44,7 +44,7 @@ function FestivalPlanner() {
     { number: 4, name: 'Sonntag', date: 'So. 5. Juli' }
   ]
 
-  const timeSlots = generateTimeSlots(zoomLevel)
+  const timeSlots = generateTimeSlots(zoomLevel, '09:00', '23:00')
   const slotHeightPx = 60 // Konstante Slot-Höhe
 
   const daySessions = sessions.filter(s => s.day === activeDay)
